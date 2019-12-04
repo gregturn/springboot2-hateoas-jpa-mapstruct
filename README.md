@@ -23,10 +23,8 @@ mvn spring-boot:run
 ### Available URLs
 
 ```
-curl -v "http://localhost:8800/api/actors"
 curl -v "http://localhost:8800/api/actors/{id}"  (1, for instance)
 curl -v "http://localhost:8800/api/actors/{id}/films"
-curl -v "http://localhost:8800/api/films"
 curl -v "http://localhost:8800/api/films/{id}"   (1, for instance)
 ```
 should result in successful responses.
