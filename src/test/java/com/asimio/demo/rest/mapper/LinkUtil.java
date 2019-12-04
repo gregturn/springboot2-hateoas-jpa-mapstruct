@@ -7,7 +7,11 @@ import org.junit.Assert;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 
-public class LinkUtil {
+public final class LinkUtil {
+
+    private LinkUtil() {
+        // NOOP
+    }
 
     public static void assertLink(ResourceSupport actualResource, String rel, String... hrefs) {
         List<Link> actualLinks = actualResource.getLinks(rel);
