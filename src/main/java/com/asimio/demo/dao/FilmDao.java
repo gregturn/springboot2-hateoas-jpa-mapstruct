@@ -7,17 +7,4 @@ import com.asimio.demo.domain.Film;
 
 @Repository
 public interface FilmDao extends JpaRepository<Film, Integer> {
-
-    // FIXME: Uncomment to fix N+1 Select problem
-//    @EntityGraph(
-//            type = EntityGraphType.FETCH,
-//            attributePaths = { "language", "filmActors", "filmActors.actor" }
-//    )
-//    Page<Film> findAll(Pageable pageable);
-//
-//    @EntityGraph(
-//            type = EntityGraphType.FETCH,
-//            attributePaths = { "language", "filmActors", "filmActors.actor" }
-//    )
-//    Optional<Film> findById(Integer id);
 }
