@@ -3,9 +3,6 @@ package com.asimio.demo.rest;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.Resources;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.asimio.demo.domain.Actor;
-import com.asimio.demo.domain.FilmActor;
 import com.asimio.demo.rest.exception.ResourceNotFoundException;
 import com.asimio.demo.rest.mapper.ActorResourceMapper;
 import com.asimio.demo.rest.mapper.FilmActorResourceMapper;
@@ -34,9 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/api/actors", produces = { MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE })
 public class ActorController {
 
-    private static final int DEFAULT_PAGE_NUMBER = 0;
-    private static final int DEFAULT_PAGE_SIZE = 20;
-
     private final DvdRentalService dvdRentalService;
 
     @GetMapping(value = "/{id}")
@@ -49,10 +42,7 @@ public class ActorController {
     }
 
     @GetMapping(value = "/{id}/films")
-    public Resources<FilmResource> retrieveActorFilms(@PathVariable Integer id,
-            @PageableDefault(page = DEFAULT_PAGE_NUMBER, size = DEFAULT_PAGE_SIZE) Pageable pageRequest,
-            PagedResourcesAssembler<FilmActor> pagedResourcesAssembler) {
-
+    public Resources<FilmResource> retrieveActorFilms(@PathVariable Integer id) {
         Actor actor = this.dvdRentalService.retrieveActor(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Actor with id=%s not found", id)));
         List<FilmResource> resources = FilmActorResourceMapper.INSTANCE.map(actor.getFilmActors());
