@@ -11,7 +11,7 @@ public interface ResourceMapper<E, R> {
 
     default List<R> map(Collection<E> entities) {
         List<R> result = new ArrayList<>();
-        entities.stream().forEach(entity -> map(entity));
+        entities.stream().forEach(entity -> result.add(map(entity)));
         return result;
     }
 }
