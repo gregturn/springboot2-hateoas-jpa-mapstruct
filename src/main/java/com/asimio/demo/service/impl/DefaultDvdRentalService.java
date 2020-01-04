@@ -2,8 +2,6 @@ package com.asimio.demo.service.impl;
 
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,18 +22,8 @@ public class DefaultDvdRentalService implements DvdRentalService {
     private final FilmDao filmDao;
 
     @Override
-    public Page<Actor> retrieveActors(Pageable pageable) {
-        return this.actorDao.findAll(pageable);
-    }
-
-    @Override
     public Optional<Actor> retrieveActor(Integer id) {
         return this.actorDao.findById(id);
-    }
-
-    @Override
-    public Page<Film> retrieveFilms(Pageable pageable) {
-        return this.filmDao.findAll(pageable);
     }
 
     @Override
