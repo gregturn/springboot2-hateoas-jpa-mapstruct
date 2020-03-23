@@ -37,7 +37,7 @@ public interface FilmResourceMapper extends ResourceMapper<Film, FilmResource> {
         .forEach(filmActor -> resource.add(
                 ControllerLinkBuilder.linkTo(
                         ControllerLinkBuilder.methodOn(ActorController.class)
-                        .retrieveActor(filmActor.getActor().getId()))
+                        .retrieveActor(filmActor.getActor().getActorId()))
                         .withRel("actors")
                 ));
     }

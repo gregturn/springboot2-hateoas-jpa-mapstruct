@@ -69,7 +69,7 @@ public class FilmFixtures {
 
     private static FilmActorId createFilmActorId(Actor actor, Film film) {
         FilmActorId result = new FilmActorId();
-        result.setActorId(Short.valueOf(actor.getId().shortValue()));
+        result.setActorId((short) actor.getActorId());
         result.setFilmId(film.getId().shortValue());
         return result;
     }
