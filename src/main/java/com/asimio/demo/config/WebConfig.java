@@ -9,7 +9,7 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 public class WebConfig {
 
     @Bean
-    FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
+    public FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
         FilterRegistrationBean<ForwardedHeaderFilter> result = new FilterRegistrationBean<>();
         result.setFilter(new ForwardedHeaderFilter());
         result.setOrder(0);
