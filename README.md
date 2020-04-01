@@ -23,9 +23,11 @@ mvn spring-boot:run
 ### Available URLs
 
 ```
-curl -v "http://localhost:8800/api/actors/{id}"  (1, for instance)
-curl -v "http://localhost:8800/api/actors/{id}/films"
-curl -v "http://localhost:8800/api/films/{id}"   (1, for instance)
+curl http://localhost:8800/api/actors/{id}  (1, for instance)
+curl http://localhost:8800/api/actors/{id}/films
+curl http://localhost:8800/api/films/{id}   (1, for instance)
+curl -H "Accept: application/hal+json" http://localhost:8080/api/actors/1/films
+curl -H "Accept: application/json" -H "X-Forwarded-Host: gateway.asimio.net" -H "X-Forwarded-Port: 9090" http://localhost:8080/api/films/133
 ```
 should result in successful responses.
 
