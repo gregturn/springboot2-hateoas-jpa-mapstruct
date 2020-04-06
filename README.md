@@ -1,6 +1,6 @@
 # README #
 
-Accompanying source code for blog entry at FIXME
+Accompanying source code for blog entry at https://tech.asimio.net/2020/04/06/Adding-HAL-Hypermedia-to-Spring-Boot-2-applications-using-Spring-HATEOAS.html
 
 
 ### Requirements ###
