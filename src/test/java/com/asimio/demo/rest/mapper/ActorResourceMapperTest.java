@@ -1,12 +1,12 @@
 package com.asimio.demo.rest.mapper;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.asimio.demo.domain.Actor;
 import com.asimio.demo.fixtures.ActorFixtures;
 import com.asimio.demo.rest.model.ActorResource;
+import org.junit.Test;
+import org.springframework.hateoas.IanaLinkRelations;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class ActorResourceMapperTest {
 
@@ -21,11 +21,11 @@ public class ActorResourceMapperTest {
     }
 
     private void assertActorResource(ActorResource actual) {
-        Assert.assertThat(actual.getActorId(), Matchers.equalTo(1));
-        Assert.assertThat(actual.getFirst(), Matchers.equalTo("First"));
-        Assert.assertThat(actual.getLast(), Matchers.equalTo("Last"));
-        Assert.assertThat(actual.getLinks().size(), Matchers.equalTo(2));
-        LinkUtil.assertLink(actual, "self", "/api/actors/1");
-        LinkUtil.assertLink(actual, "films", "/api/actors/1/films");
+        assertThat(actual.getActorId()).isEqualTo(1);
+        assertThat(actual.getFirst()).isEqualTo("First");
+        assertThat(actual.getLast()).isEqualTo("Last");
+        assertThat(actual.getLinks()).hasSize(2);
+        assertThat(actual.getRequiredLink(IanaLinkRelations.SELF).getHref()).isEqualTo("/api/actors/1");
+        assertThat(actual.getRequiredLink("films").getHref()).isEqualTo("/api/actors/1/films");
     }
 }

@@ -1,10 +1,7 @@
 package com.asimio.demo.domain;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,17 +14,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.hateoas.Identifiable;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "film", schema = "public")
 @Getter
 @Setter
-public class Film implements Identifiable<Integer>, Serializable {
+public class Film implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,15 +71,14 @@ public class Film implements Identifiable<Integer>, Serializable {
     private String fulltext;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "film")
-    private Set<Inventory> inventories = new HashSet<Inventory>(0);
+    private Set<Inventory> inventories = new HashSet<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "film")
-    private Set<FilmCategory> filmCategories = new HashSet<FilmCategory>(0);
+    private Set<FilmCategory> filmCategories = new HashSet<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "film")
-    private Set<FilmActor> filmActors = new HashSet<FilmActor>(0);
+    private Set<FilmActor> filmActors = new HashSet<>(0);
 
-    @Override
     public Integer getId() {
         return this.filmId;
     }

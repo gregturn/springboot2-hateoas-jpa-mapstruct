@@ -1,8 +1,7 @@
 package com.asimio.demo.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,17 +12,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.hateoas.Identifiable;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "actor", schema = "public")
 @Getter
 @Setter
-public class Actor implements Identifiable<Integer>, Serializable {
+public class Actor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +41,6 @@ public class Actor implements Identifiable<Integer>, Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "actor")
     private Set<FilmActor> filmActors;
 
-    @Override
     public Integer getId() {
         return this.actorId;
     }

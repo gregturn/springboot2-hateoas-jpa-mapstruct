@@ -1,12 +1,16 @@
 package com.asimio.demo.rest;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.asimio.demo.domain.Actor;
+import com.asimio.demo.rest.exception.ResourceNotFoundException;
+import com.asimio.demo.rest.mapper.ActorResourceMapper;
+import com.asimio.demo.rest.mapper.FilmActorResourceMapper;
+import com.asimio.demo.rest.model.ActorResource;
+import com.asimio.demo.rest.model.FilmResource;
+import com.asimio.demo.service.DvdRentalService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +19,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.asimio.demo.domain.Actor;
-import com.asimio.demo.rest.exception.ResourceNotFoundException;
-import com.asimio.demo.rest.mapper.ActorResourceMapper;
-import com.asimio.demo.rest.mapper.FilmActorResourceMapper;
-import com.asimio.demo.rest.model.ActorResource;
-import com.asimio.demo.rest.model.FilmResource;
-import com.asimio.demo.service.DvdRentalService;
+import java.util.List;
+import java.util.Optional;
 
-import lombok.RequiredArgsConstructor;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/actors", produces = { MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE })
+@RequestMapping("/api/actors")
 public class ActorController {
 
     private final DvdRentalService dvdRentalService;
@@ -42,26 +41,21 @@ public class ActorController {
     }
 
     @GetMapping(value = "/{id}/films")
-    public Resources<FilmResource> retrieveActorFilms(@PathVariable Integer id) {
+    public CollectionModel<FilmResource> retrieveActorFilms(@PathVariable Integer id) {
         Actor actor = this.dvdRentalService.retrieveActor(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Actor with id=%s not found", id)));
-        List<FilmResource> resources = FilmActorResourceMapper.INSTANCE.map(actor.getFilmActors());
-        Resources<FilmResource> result = new Resources<>(resources);
+        List<FilmResource> CollectionModel = FilmActorResourceMapper.INSTANCE.map(actor.getFilmActors());
+        CollectionModel<FilmResource> result = new CollectionModel<>(CollectionModel);
         // Adding root level links: self=/api/actors/1/films, parent=/api/actors/1 in addition to each film's self link
         this.addLinks(result, actor);
         return result;
     }
 
-    private void addLinks(Resources<FilmResource> resources, Actor actor) {
+    private void addLinks(CollectionModel<FilmResource> CollectionModel, Actor actor) {
         // parent link
-        Link parentLink = ControllerLinkBuilder.linkTo(ActorController.class)
-                .slash(actor)
-                .withRel("parent");
+        Link parentLink = linkTo(methodOn(ActorController.class).retrieveActor(actor.getId())).withRel("parent");
         // self link
-        Link selfLink = ControllerLinkBuilder.linkTo(ActorController.class)
-                .slash(actor)
-                .slash("films")
-                .withSelfRel();
-        resources.add(parentLink, selfLink);
+        Link selfLink = linkTo(methodOn(ActorController.class).retrieveActorFilms(actor.getId())).withSelfRel();
+        CollectionModel.add(parentLink, selfLink);
     }
 }

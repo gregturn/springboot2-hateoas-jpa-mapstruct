@@ -1,19 +1,17 @@
 package com.asimio.demo.rest.model;
 
-import java.math.BigDecimal;
-
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Relation(value = "film", collectionRelation = "films")
-public class FilmResource extends ResourceSupport {
+public class FilmResource extends RepresentationModel<FilmResource> {
 
     @JsonProperty("id")
     private int filmId;

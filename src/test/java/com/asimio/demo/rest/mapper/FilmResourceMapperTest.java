@@ -1,14 +1,17 @@
 package com.asimio.demo.rest.mapper;
 
-import java.math.BigDecimal;
-
-import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.asimio.demo.domain.Film;
 import com.asimio.demo.fixtures.FilmFixtures;
 import com.asimio.demo.rest.model.FilmResource;
+import org.junit.Test;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Links;
+
+import java.math.BigDecimal;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class FilmResourceMapperTest {
 
@@ -23,16 +26,16 @@ public class FilmResourceMapperTest {
     }
 
     private void assertFilmResource(FilmResource actual) {
-        Assert.assertThat(actual.getFilmId(), Matchers.equalTo(10));
-        Assert.assertThat(actual.getTitle(), Matchers.equalTo("Title"));
-        Assert.assertThat(actual.getDescription(), Matchers.equalTo("Description"));
-        Assert.assertThat(actual.getReleaseYear(), Matchers.equalTo("1990"));
-        Assert.assertThat(actual.getLang(), Matchers.equalTo("English"));
-        Assert.assertThat(actual.getLength().intValue(), Matchers.equalTo(90));
-        Assert.assertThat(actual.getRentalRate(), Matchers.equalTo(BigDecimal.valueOf(4.50)));
-        Assert.assertThat(actual.getRentalDuration().intValue(), Matchers.equalTo(48));
-        Assert.assertThat(actual.getLinks().size(), Matchers.equalTo(3));
-        LinkUtil.assertLink(actual, "self", "/api/films/10");
-        LinkUtil.assertLink(actual, "actors", "/api/actors/2", "/api/actors/3");
+        assertThat(actual.getFilmId()).isEqualTo(10);
+        assertThat(actual.getTitle()).isEqualTo("Title");
+        assertThat(actual.getDescription()).isEqualTo("Description");
+        assertThat(actual.getReleaseYear()).isEqualTo("1990");
+        assertThat(actual.getLang()).isEqualTo("English");
+        assertThat(actual.getLength()).isEqualTo((short) 90);
+        assertThat(actual.getRentalRate()).isEqualTo(new BigDecimal(4.50));
+        assertThat(actual.getRentalDuration()).isEqualTo((short) 48);
+        assertThat(actual.getLinks()).hasSize(3);
+        assertThat(actual.getRequiredLink(IanaLinkRelations.SELF).getHref()).isEqualTo("/api/films/10");
+        assertThat(actual.getLinks("actors")).extracting(Link::getHref).containsExactlyInAnyOrder("/api/actors/2", "/api/actors/3");
     }
 }

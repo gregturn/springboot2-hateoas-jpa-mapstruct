@@ -1,5 +1,8 @@
 package com.asimio.demo.rest.mapper;
 
+import com.asimio.demo.domain.Actor;
+import com.asimio.demo.rest.ActorController;
+import com.asimio.demo.rest.model.ActorResource;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -7,11 +10,9 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
-import com.asimio.demo.domain.Actor;
-import com.asimio.demo.rest.ActorController;
-import com.asimio.demo.rest.model.ActorResource;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Mapper
 public interface ActorResourceMapper extends ResourceMapper<Actor, ActorResource> {
@@ -26,9 +27,8 @@ public interface ActorResourceMapper extends ResourceMapper<Actor, ActorResource
 
     @AfterMapping
     default void addLinks(@MappingTarget ActorResource resource, Actor entity) {
-        ControllerLinkBuilder linkBuilder = ControllerLinkBuilder.linkTo(ActorController.class).slash(entity);
-        Link selfLink = linkBuilder.withSelfRel();
-        Link filmsLink = linkBuilder.slash("films").withRel("films");
+        Link selfLink = linkTo(methodOn(ActorController.class).retrieveActor(entity.getId())).withSelfRel();
+        Link filmsLink = linkTo(methodOn(ActorController.class).retrieveActorFilms(entity.getId())).withRel("films");
         resource.add(selfLink, filmsLink);
     }
 }
