@@ -1,17 +1,15 @@
 package com.asimio.demo.rest.model;
 
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Relation(value = "actor", collectionRelation = "actors")
-public class ActorResource extends ResourceSupport {
+public class ActorResource extends RepresentationModel<ActorResource> {
 
     @JsonProperty("id")
     private int actorId;
